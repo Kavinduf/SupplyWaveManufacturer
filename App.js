@@ -5,6 +5,8 @@ import { StyleSheet, Text, View } from "react-native";
 import HomeManufacturer from "./screens/HomeManufacturer";
 import Products from "./screens/Products";
 import Orders from "./screens/Orders";
+import OrderDetails from "./screens/OrderDetails";
+import PackageDetails from "./screens/PackageDetails";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -33,6 +35,22 @@ export default function App() {
             options={{
               headerShown: true,
               title: "All orders",
+            }}
+          />
+          <Stack.Screen
+            name="PackageDetails"
+            component={PackageDetails}
+            options={{
+              headerShown: true,
+              title: "Package Details",
+            }}
+          />
+          <Stack.Screen
+            name="OrderDetails"
+            component={OrderDetails}
+            options={{
+              headerShown: true,
+              title: "Order Details",
             }}
           />
         </Stack.Navigator>

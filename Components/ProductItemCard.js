@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, StatusBar, Pressable } from "react-native";
 import React from "react";
-import { Button, Card, Image } from "@rneui/themed";
+import { Image } from "@rneui/themed";
 import { Icon, color } from "@rneui/base";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";

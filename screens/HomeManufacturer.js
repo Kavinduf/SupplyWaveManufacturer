@@ -30,7 +30,12 @@ const HomeManufacturer = ({ navigation, route }) => {
           <Text style={{ fontSize: 18, fontWeight: "600", width: 210 }}>
             Maliban Pvt Ltd
           </Text>
-          <AntDesign name="right" size={19} color="black" />
+          <AntDesign
+            name="right"
+            size={19}
+            color="#2A8B00"
+            style={{ paddingEnd: 5 }}
+          />
         </Pressable>
       </View>
 
@@ -48,7 +53,7 @@ const HomeManufacturer = ({ navigation, route }) => {
             <Text style={{ fontSize: 17, fontWeight: "600", width: 210 }}>
               Orders
             </Text>
-            <AntDesign name="right" size={19} color="black" />
+            <AntDesign name="right" size={19} color="#2A8B00" />
           </View>
           {/* Orders top start */}
 
@@ -156,7 +161,7 @@ const HomeManufacturer = ({ navigation, route }) => {
             <Text style={{ fontSize: 17, fontWeight: "600", width: 210 }}>
               Products
             </Text>
-            <AntDesign name="right" size={19} color="black" />
+            <AntDesign name="right" size={19} color="#2A8B00" />
           </View>
 
           {/* Products top end */}

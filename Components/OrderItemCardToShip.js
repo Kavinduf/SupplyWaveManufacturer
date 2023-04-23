@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, StatusBar, Pressable } from "react-native";
 import React from "react";
-import { Image } from "@rneui/themed";
-import { AntDesign } from "@expo/vector-icons";
+import { Image, CheckBox } from "@rneui/themed";
+import { Ionicons } from "@expo/vector-icons";
 
-const OrderItemCard = ({ OrderNumber, Time, Date, Total }) => {
+const OrderItemCardToShip = ({ OrderNumber, Time, Date, Total }) => {
   return (
     <View style={styles.container}>
       <Pressable
@@ -26,15 +26,20 @@ const OrderItemCard = ({ OrderNumber, Time, Date, Total }) => {
             <Text style={styles.textRight}>LKR {Total}.00</Text>
           </View>
         </View>
-        <View>
-          <AntDesign name="right" size={20} color="#2A8B00" />
+        <View style={{ marginEnd: 5 }}>
+          <Ionicons
+            name="radio-button-on"
+            size={25}
+            color="#2A8B00"
+            style={{ alignSelf: "center" }}
+          />
         </View>
       </Pressable>
     </View>
   );
 };
 
-export default OrderItemCard;
+export default OrderItemCardToShip;
 
 const styles = StyleSheet.create({
   TopView: {
