@@ -7,6 +7,7 @@ import Products from "./screens/Products";
 import Orders from "./screens/Orders";
 import OrderDetails from "./screens/OrderDetails";
 import PackageDetails from "./screens/PackageDetails";
+import AddProduct from "./screens/AddProduct";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -15,7 +16,7 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="HomeManufacturer"
+          initialRouteName="OrderDetails"
           screenOptions={{
             headerShown: false,
           }}
@@ -35,6 +36,14 @@ export default function App() {
             options={{
               headerShown: true,
               title: "All orders",
+            }}
+          />
+          <Stack.Screen
+            name="AddProduct"
+            component={AddProduct}
+            options={{
+              headerShown: true,
+              title: "Add Product",
             }}
           />
           <Stack.Screen

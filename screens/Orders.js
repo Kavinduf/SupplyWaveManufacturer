@@ -68,7 +68,7 @@ function ToShipScreen() {
         />
       </ScrollView>
       <View style={{ marginHorizontal: 15, marginBottom: 10, marginTop: 15 }}>
-        <GreenButton title={"Deliver"} />
+        <GreenButton title={"Shipped"} />
       </View>
     </View>
   );
@@ -82,14 +82,15 @@ function ShippedScreen() {
   return (
     <View style={styles.Subcontainer}>
       <ScrollView>
-        <OrderItemCard
-          OrderNumber={234762354}
-          Time={20.09}
-          Date={"12 / 05 / 2020"}
-          Total={15000}
+        <PackageCard
+          PackageNumber={124234235}
+          Orders={5}
           // OrderDetails={"OrderDetails"}
         />
       </ScrollView>
+      <View style={{ marginHorizontal: 15, marginBottom: 10, marginTop: 15 }}>
+        <GreenButton title={"Delivered"} />
+      </View>
     </View>
   );
 }

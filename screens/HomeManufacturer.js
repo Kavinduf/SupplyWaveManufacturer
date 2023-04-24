@@ -9,8 +9,11 @@ import {
 import React from "react";
 import { Image } from "@rneui/themed";
 import { AntDesign } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const HomeManufacturer = ({ navigation, route }) => {
+const HomeManufacturer = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Top View start */}
@@ -261,6 +264,77 @@ const HomeManufacturer = ({ navigation, route }) => {
       </View>
 
       {/* products end */}
+
+      {/* Store Management start */}
+
+      <View style={styles.bottomView}>
+        <Text style={{ fontSize: 17, fontWeight: "600" }}>
+          Store Management
+        </Text>
+
+        {/* Pressable add products start          */}
+
+        <Pressable
+          style={styles.storePressableTop}
+          onPress={() => navigation.navigate("AddProduct")}
+        >
+          <AntDesign name="pluscircleo" size={24} color="#2A8B00" />
+          <View style={{ alignItems: "center", marginTop: 10 }}>
+            <Text style={styles.storeText}>Add products </Text>
+            {/* <Text style={styles.storeText}> </Text> */}
+          </View>
+        </Pressable>
+
+        {/* Pressable add products end        */}
+
+        <View style={styles.storeView}>
+          {/* Pressable products start          */}
+
+          <Pressable
+            style={styles.storePressable}
+            onPress={() => navigation.navigate("Products")}
+          >
+            <SimpleLineIcons name="handbag" size={24} color="#2A8B00" />
+            <View style={{ alignItems: "center", marginTop: 10 }}>
+              <Text style={styles.storeText}> Products</Text>
+            </View>
+          </Pressable>
+
+          {/* Pressable  products end        */}
+          {/* Pressable Orders start          */}
+
+          <Pressable
+            style={styles.storePressable}
+            onPress={() => navigation.navigate("Orders")}
+          >
+            <Ionicons name="clipboard-outline" size={24} color="#2A8B00" />
+            <View style={{ alignItems: "center", marginTop: 10 }}>
+              <Text style={styles.storeText}> Orders</Text>
+            </View>
+          </Pressable>
+
+          {/* Pressable orders end        */}
+          {/* Request Catergory Start        */}
+
+          <Pressable
+            style={styles.storePressable}
+            onPress={() => navigation.navigate("Orders")}
+          >
+            <MaterialCommunityIcons
+              name="filter-variant-plus"
+              size={28}
+              color="#2A8B00"
+            />
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.storeText}> Request Catergory</Text>
+            </View>
+          </Pressable>
+
+          {/* Request Catergory end        */}
+        </View>
+      </View>
+
+      {/* Store Management end */}
     </SafeAreaView>
   );
 };
@@ -328,5 +402,61 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginEnd: 2,
     color: "grey",
+  },
+  // storeBottomView: {
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  //   padding: 15,
+  //   marginHorizontal: 15,
+  //   backgroundColor: "#FFF",
+  //   borderRadius: 10,
+  //   marginTop: 15,
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 1,
+  //     height: 1,
+  //   },
+  //   shadowOpacity: 0.1,
+  //   shadowRadius: 2.5,
+  //   elevation: 1,
+  // },
+  storeView: {
+    flexDirection: "row",
+    marginTop: 20,
+    justifyContent: "space-between",
+  },
+  storeText: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  storePressableTop: {
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2.5,
+    elevation: 1,
+    marginTop: 20,
+  },
+  storePressable: {
+    width: 90,
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2.5,
+    elevation: 1,
   },
 });
