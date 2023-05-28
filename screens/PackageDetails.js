@@ -5,33 +5,136 @@ import {
   StatusBar,
   SafeAreaView,
   ScrollView,
+  Pressable,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import OrderItemCard from "../Components/OrderItemCard";
+import { FlatList } from "react-native";
+import GreenButton from "../Components/GreenButton";
+import AddToDeliveryBottomSheet from "../Components/PackageDetails/AddToDeliveryBottomSheet";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { db } from "../firebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  onSnapshot,
+  doc,
+} from "firebase/firestore";
 
-const PackageOrders = ({ PackageNumber, Orders }) => {
+const PackageOrders = ({ PackageNumber, Orders, navigation, route }) => {
+  const addToDeliveryBottomSheetRef = useRef(null);
+
+  const [packageData, setPackageData] = React.useState(route.params.package);
+
+  useEffect(() => {
+    let unsubscribe;
+    const ref = doc(db, "packages", route.params.package.id);
+    unsubscribe = onSnapshot(ref, (doc) => {
+      setPackageData({ id: doc.id, ...doc.data() });
+    });
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.TopView}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.textLeft}>Package Number: </Text>
-          <Text style={styles.textRight}>515113</Text>
+    <>
+      <Pressable
+        style={styles.container}
+        onPress={() => {
+          addToDeliveryBottomSheetRef.current?.close();
+        }}
+      >
+        <View style={styles.TopView}>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.textLeft}>Package Number: </Text>
+            <Text style={styles.textRight}>{packageData.id}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.textLeft}>Orders in package: </Text>
+            <Text style={styles.textRight}>{packageData.numOfOrders}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            {/* package deliver by */}
+            {packageData.delivery && packageData.status !== "toShip" && (
+              <Text
+                style={[
+                  styles.textLeft,
+                  {
+                    marginTop: 10,
+                    color: "#000",
+                    fontWeight: "bold",
+                    fontSize: 16,
+                  },
+                ]}
+              >
+                {/* package delivery by text  */}
+                {packageData.delivery.deliveryBy === "driver"
+                  ? "Delivery by driver"
+                  : "Delivery by yourself"}
+              </Text>
+            )}
+          </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.textLeft}>Orders in package: </Text>
-          <Text style={styles.textRight}>5</Text>
-        </View>
-      </View>
-      <ScrollView>
-        <OrderItemCard
-          OrderNumber={234762354}
-          Time={20.09}
-          Date={"12 / 05 / 2020"}
-          Total={15000}
-          // OrderDetails={"OrderDetails"}
+        <FlatList
+          data={packageData.orders}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <OrderItemCard
+              {...item}
+              navigation={navigation}
+              // OrderDetails={"OrderDetails"}
+            />
+          )}
         />
-      </ScrollView>
-    </View>
+        {/* //add to shipping button */}
+        {packageData.status === "toShip" && (
+          <View
+            style={{
+              margin: 10,
+            }}
+          >
+            <GreenButton
+              title={"Add to shipping"}
+              onClick={() => {
+                addToDeliveryBottomSheetRef.current?.expand();
+              }}
+            />
+          </View>
+        )}
+        {/* Order Tracking button */}
+        {packageData.delivery && packageData.status !== "toShip" && (
+          <View
+            style={{
+              margin: 10,
+            }}
+          >
+            <GreenButton
+              title={"Order Tracking"}
+              onClick={() => {
+                if (packageData.delivery.deliveryBy === "driver") {
+                  navigation.navigate("OrderDeliveryDriver", {
+                    package: packageData,
+                  });
+                  return;
+                }
+                navigation.navigate("OrderDelivery", {
+                  package: packageData,
+                });
+              }}
+            />
+          </View>
+        )}
+      </Pressable>
+      <AddToDeliveryBottomSheet
+        bottomSheetRef={addToDeliveryBottomSheetRef}
+        data={packageData}
+      />
+    </>
   );
 };
 

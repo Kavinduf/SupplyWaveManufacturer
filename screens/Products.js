@@ -1,20 +1,80 @@
-import { StyleSheet, Text, View, StatusBar, SafeAreaView } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  SafeAreaView,
+  FlatList,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ProductItemCard from "../Components/ProductItemCard";
 import { Image } from "@rneui/base";
 
+import { db } from "../firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { Dialog } from "@rneui/themed";
+import { useAppContext } from "../context/appContext";
+
 // active screen start
 
-function ActiveScreen() {
+function ActiveScreen({ navigation }) {
+  const { user } = useAppContext();
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getProducts = async () => {
+    setIsLoading(true);
+    const q = query(
+      collection(db, "products"),
+      where("status", "==", "active"),
+      where("manufacturerId", "==", user.uid)
+    );
+    const querySnapshot = await getDocs(q);
+    const products = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setProducts(products);
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    getProducts();
+    navigation.addListener("focus", () => {
+      getProducts();
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
-      <ProductItemCard
-        title={"Maliban 100g (12pc)"}
-        Pieces={15}
-        unitPrice={1500}
-        stock={50}
-        pieces={15}
+      <Dialog
+        isVisible={isLoading}
+        overlayStyle={{
+          width: 90,
+          height: 90,
+        }}
+      >
+        <Dialog.Loading />
+      </Dialog>
+      <FlatList
+        data={products}
+        renderItem={({ item }) => (
+          <ProductItemCard
+            title={item.productName}
+            unitPrice={item.pricePerUnit}
+            stock={item.stock}
+            pieces={item.piecesInUnit}
+            image={item.image}
+            status={item.status}
+            weight={item.weight}
+            id={item.id}
+            setIsLoading={setIsLoading}
+            getProducts={getProducts}
+            navigation={navigation}
+            category={item.category}
+            subCategory={item.subCategory}
+          />
+        )}
       />
     </View>
   );
@@ -24,15 +84,61 @@ function ActiveScreen() {
 
 // Out od stock Screen start
 
-function InactiveScreen() {
+function InactiveScreen({ navigation }) {
+  const { user } = useAppContext();
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getProducts = async () => {
+    setIsLoading(true);
+    const q = query(
+      collection(db, "products"),
+      where("status", "==", "inactive"),
+      where("manufacturerId", "==", user.uid)
+    );
+    const querySnapshot = await getDocs(q);
+    const products = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setProducts(products);
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    getProducts();
+    navigation.addListener("focus", () => {
+      getProducts();
+    });
+  }, []);
   return (
     <View style={styles.container}>
-      <ProductItemCard
-        title={"Maliban 100g (12pc)"}
-        Pieces={15}
-        unitPrice={1500}
-        stock={50}
-        pieces={15}
+      <Dialog
+        isVisible={isLoading}
+        overlayStyle={{
+          width: 90,
+          height: 90,
+        }}
+      >
+        <Dialog.Loading />
+      </Dialog>
+      <FlatList
+        data={products}
+        renderItem={({ item }) => (
+          <ProductItemCard
+            title={item.productName}
+            unitPrice={item.pricePerUnit}
+            stock={item.stock}
+            pieces={item.piecesInUnit}
+            image={item.image}
+            status={item.status}
+            id={item.id}
+            setIsLoading={setIsLoading}
+            getProducts={getProducts}
+            navigation={navigation}
+            category={item.category}
+            subCategory={item.subCategory}
+          />
+        )}
       />
     </View>
   );
@@ -40,23 +146,24 @@ function InactiveScreen() {
 
 // Out od stock Screen end
 
-// rejected screen start
+// // rejected screen start
 
-function RejectedScreen() {
-  return (
-    <View style={styles.container}>
-      <ProductItemCard
-        title={"Maliban 100g (12pc)"}
-        Pieces={15}
-        unitPrice={1500}
-        stock={50}
-        pieces={15}
-      />
-    </View>
-  );
-}
+// function RejectedScreen() {
+//   const { user } = useAppContext();
+//   return (
+//     <View style={styles.container}>
+//       <ProductItemCard
+//         title={'Maliban 100g (12pc)'}
+//         Pieces={15}
+//         unitPrice={1500}
+//         stock={50}
+//         pieces={15}
+//       />
+//     </View>
+//   );
+// }
 
-// rejected screen end
+// // rejected screen end
 
 const Tab = createMaterialTopTabNavigator();
 const Products = () => {
@@ -78,9 +185,9 @@ const Products = () => {
           },
         }}
       >
-        <Tab.Screen name="Active(0)" component={ActiveScreen} />
-        <Tab.Screen name="Inactive(0)" component={InactiveScreen} />
-        <Tab.Screen name="Rejected(0)" component={RejectedScreen} />
+        <Tab.Screen name="Active" component={ActiveScreen} />
+        <Tab.Screen name="Inactive" component={InactiveScreen} />
+        {/* <Tab.Screen name='Rejected' component={RejectedScreen} /> */}
       </Tab.Navigator>
     </SafeAreaView>
   );

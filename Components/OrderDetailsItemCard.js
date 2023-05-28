@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 import { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 
@@ -14,7 +14,8 @@ const OrderDetailsItemCard = ({
     <View>
       <View>
         <Text style={styles.title}>
-          {title} ({pieces}pc)
+          {title}
+          {/* ({pieces}pc) */}
         </Text>
 
         <View style={{ flexDirection: "row" }}>
@@ -38,7 +39,7 @@ const OrderDetailsItemCard = ({
   );
 };
 
-export default OrderDetailsItemCard;
+export default memo(OrderDetailsItemCard);
 
 const styles = StyleSheet.create({
   title: {

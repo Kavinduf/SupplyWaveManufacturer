@@ -1,23 +1,118 @@
-import { StyleSheet, Text, View, StatusBar, Pressable } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Pressable,
+  Alert,
+} from "react-native";
+import React, { memo } from "react";
 import { Image } from "@rneui/themed";
 import { Icon, color } from "@rneui/base";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
 
-const ProductItemCard = ({ title, pieces, unitPrice }) => {
+import { db } from "../firebase";
+import { collection, updateDoc, doc, deleteDoc } from "firebase/firestore";
+
+const ProductItemCard = ({
+  title,
+  pieces,
+  unitPrice,
+  status,
+  image,
+  id,
+  weight,
+  category,
+  subCategory,
+  setIsLoading,
+  getProducts,
+  navigation,
+}) => {
+  const onDeactivateClicked = async () => {
+    setIsLoading(true);
+    await updateDoc(doc(db, "products", id), {
+      status: "inactive",
+    });
+    setIsLoading(false);
+    getProducts();
+  };
+
+  const onActivateClicked = async () => {
+    setIsLoading(true);
+    await updateDoc(doc(db, "products", id), {
+      status: "active",
+    });
+    setIsLoading(false);
+    getProducts();
+  };
+
+  const onEditClicked = () => {
+    navigation.navigate("AddProduct", {
+      product: {
+        productName: title,
+        piecesInUnit: pieces,
+        pricePerUnit: unitPrice,
+        category,
+        weight,
+        subCategory,
+        image,
+        id,
+      },
+    });
+  };
+
+  const deleteProduct = async () => {
+    setIsLoading(true);
+    await deleteDoc(doc(db, "products", id));
+    setIsLoading(false);
+    getProducts();
+  };
+
+  const onDeleteClicked = async () => {
+    Alert.alert(
+      "Delete Product",
+      "Are you sure you want to delete this product?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => deleteProduct(),
+        },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 10 }}>
+      <View style={{ marginTop: 5 }}>
         <View style={styles.TopView}>
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              source={require("../assets/login-png.png")}
-              style={{
-                width: 80,
-                height: 80,
-              }}
-            />
+          <View style={{ flexDirection: "row", gap: 8 }}>
+            {!image && (
+              <Image
+                source={require("../assets/login-png.png")}
+                style={{
+                  width: 80,
+                  height: 80,
+                }}
+              />
+            )}
+            {image && (
+              <Image
+                source={{
+                  uri: image,
+                }}
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 10,
+                }}
+              />
+            )}
             <View style={{ paddingStart: 2, marginBottom: 5 }}>
               <Text style={styles.textTitle}>{title}</Text>
 
@@ -36,9 +131,7 @@ const ProductItemCard = ({ title, pieces, unitPrice }) => {
 
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.textDescriptionLeft}>Unit price :</Text>
-                <Text style={styles.textDescriptionRight}>
-                  {unitPrice} LKR{" "}
-                </Text>
+                <Text style={styles.textDescriptionRight}>LKR {unitPrice}</Text>
               </View>
               {/* Description end*/}
             </View>
@@ -54,20 +147,32 @@ const ProductItemCard = ({ title, pieces, unitPrice }) => {
               marginHorizontal: 10,
             }}
           >
-            <Pressable>
-              <Text style={styles.textBottom}>Edit Price</Text>
-            </Pressable>
-            <View style={styles.line}></View>
-            <Pressable>
-              <Text style={styles.textBottom}>Deactivate</Text>
-            </Pressable>
-            <View style={styles.line}></View>
-            <Pressable>
+            <Pressable
+              style={{ flexDirection: "row", gap: 5 }}
+              onPress={onEditClicked}
+            >
               <AntDesign name="edit" size={21} color={"#2A8B00"} />
+              <Text style={styles.textBottom}>Edit</Text>
             </Pressable>
             <View style={styles.line}></View>
+            {status === "active" && (
+              <Pressable onPress={onDeactivateClicked}>
+                <Text style={styles.textBottom}>Deactivate</Text>
+              </Pressable>
+            )}
+            {status === "inactive" && (
+              <Pressable onPress={onActivateClicked}>
+                <Text style={styles.textBottom}>Activate</Text>
+              </Pressable>
+            )}
+            <View style={styles.line}></View>
+            {/* <Pressable>
+              <AntDesign name='edit' size={21} color={'#2A8B00'} />
+            </Pressable> */}
+            {/* <View style={styles.line}></View> */}
             <Pressable>
               <AntDesign
+                onPress={onDeleteClicked}
                 name="delete"
                 size={21}
                 color={"#2A8B00"}
@@ -81,12 +186,10 @@ const ProductItemCard = ({ title, pieces, unitPrice }) => {
   );
 };
 
-export default ProductItemCard;
+export default memo(ProductItemCard);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 15,
     backgroundColor: "#F5F5F5",
   },
   TopView: {

@@ -1,19 +1,38 @@
 import { StyleSheet, Text, View, StatusBar, Pressable } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 import { Image, CheckBox } from "@rneui/themed";
 import { Ionicons } from "@expo/vector-icons";
 
-const OrderItemCardToShip = ({ PackageNumber, Orders }) => {
+const OrderItemCardToShip = ({
+  id,
+  numOfOrders,
+  navigation,
+  orders,
+  selected,
+  setSelectedOrders,
+  status,
+  delivery,
+}) => {
   return (
     <View style={styles.container}>
       <Pressable
         style={styles.TopView}
-        // onPress={() => navigation.navigate({OrderDetails})}
+        onPress={() =>
+          navigation.navigate("PackageDetails", {
+            package: {
+              id,
+              numOfOrders,
+              orders,
+              status,
+              delivery,
+            },
+          })
+        }
       >
         <View>
           <View style={{ flexDirection: "row", marginTop: 5 }}>
             <Text style={styles.textLeft}>Package Number: </Text>
-            <Text style={styles.textRight}>{PackageNumber}</Text>
+            <Text style={styles.textRight}>{id}</Text>
           </View>
           {/* <View style={{ flexDirection: "row", marginTop: 5 }}>
             <Text style={styles.textLeft}>Time: </Text>
@@ -23,23 +42,41 @@ const OrderItemCardToShip = ({ PackageNumber, Orders }) => {
           </View> */}
           <View style={{ flexDirection: "row", marginTop: 5 }}>
             <Text style={styles.textLeft}>Orders in package: </Text>
-            <Text style={styles.textRight}>{Orders}</Text>
+            <Text style={styles.textRight}>{numOfOrders}</Text>
           </View>
         </View>
-        <View style={{ marginEnd: 5 }}>
-          <Ionicons
-            name="radio-button-on"
-            size={25}
-            color="#2A8B00"
-            style={{ alignSelf: "center" }}
-          />
-        </View>
+        {/* {selected !== null && (
+          <View style={{ marginEnd: 5 }}>
+            {selected && (
+              <Ionicons
+                name='radio-button-on'
+                size={25}
+                color='#2A8B00'
+                style={{ alignSelf: 'center' }}
+                onPress={() =>
+                  setSelectedOrders((prev) =>
+                    prev.filter((item) => item !== id)
+                  )
+                }
+              />
+            )}
+            {!selected && (
+              <Ionicons
+                name='radio-button-off'
+                size={25}
+                color='#2A8B00'
+                style={{ alignSelf: 'center' }}
+                onPress={() => setSelectedOrders((prev) => [...prev, id])}
+              />
+            )}
+          </View>
+        )} */}
       </Pressable>
     </View>
   );
 };
 
-export default OrderItemCardToShip;
+export default memo(OrderItemCardToShip);
 
 const styles = StyleSheet.create({
   TopView: {

@@ -1,52 +1,79 @@
-import { StyleSheet, Text, View, StatusBar, Pressable } from "react-native";
-import React from "react";
-import { Image } from "@rneui/themed";
-import { AntDesign } from "@expo/vector-icons";
+import { StyleSheet, Text, View, StatusBar, Pressable } from 'react-native';
+import React, { memo } from 'react';
+import { Image } from '@rneui/themed';
+import { AntDesign } from '@expo/vector-icons';
+import moment from 'moment';
+import { Timestamp } from 'firebase/firestore';
 
-const OrderItemCard = ({ OrderNumber, Time, Date, Total }) => {
+const OrderItemCard = ({
+  id,
+  createdAt,
+  total,
+  navigation,
+  items,
+  status,
+  deliverStore,
+  userId,
+}) => {
+  if (!createdAt) return null;
   return (
     <View style={styles.container}>
       <Pressable
         style={styles.TopView}
-        // onPress={() => navigation.navigate({OrderDetails})}
+        onPress={() => {
+          navigation.navigate('OrderDetails', {
+            order: {
+              id,
+              createdAt: Object.values(createdAt)[0] * 1000,
+              total,
+              items,
+              status,
+              deliverStore: deliverStore,
+              userId: userId,
+            },
+          });
+        }}
       >
         <View>
-          <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ flexDirection: 'row', marginTop: 5 }}>
             <Text style={styles.textLeft}>Order Number: </Text>
-            <Text style={styles.textRight}>{OrderNumber}</Text>
+            <Text style={styles.textRight}>{id}</Text>
           </View>
-          <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ flexDirection: 'row', marginTop: 5 }}>
             <Text style={styles.textLeft}>Time: </Text>
             <Text style={styles.textRight}>
-              {Date} {Time}
+              {moment(Object.values(createdAt)[0] * 1000)?.format(
+                'DD/MM/YYYY, hh:mm'
+              )}
+              {/* {new Date(Timestamp.fromDate(Time)).toISOString()} */}
             </Text>
           </View>
-          <View style={{ flexDirection: "row", marginTop: 5 }}>
+          <View style={{ flexDirection: 'row', marginTop: 5 }}>
             <Text style={styles.textLeft}>Total price:</Text>
-            <Text style={styles.textRight}>LKR {Total}.00</Text>
+            <Text style={styles.textRight}>LKR {total}.00</Text>
           </View>
         </View>
         <View>
-          <AntDesign name="right" size={20} color="#2A8B00" />
+          <AntDesign name='right' size={20} color='#2A8B00' />
         </View>
       </Pressable>
     </View>
   );
 };
 
-export default OrderItemCard;
+export default memo(OrderItemCard);
 
 const styles = StyleSheet.create({
   TopView: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
     padding: 10,
     marginHorizontal: 10,
     paddingBottom: 10,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     marginTop: 10,
     shadowOffset: {
       width: 1,
@@ -58,11 +85,11 @@ const styles = StyleSheet.create({
   },
   textLeft: {
     fontSize: 15,
-    fontWeight: "500",
-    color: "gray",
+    fontWeight: '500',
+    color: 'gray',
   },
   textRight: {
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
