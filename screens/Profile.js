@@ -5,9 +5,9 @@ import {
   StatusBar,
   SafeAreaView,
   Pressable,
-} from 'react-native';
-import React, { useState } from 'react';
-import { Dialog, Image } from '@rneui/themed';
+} from "react-native";
+import React, { useState } from "react";
+import { Dialog, Image } from "@rneui/themed";
 import {
   FontAwesome5,
   AntDesign,
@@ -16,9 +16,9 @@ import {
   Ionicons,
   FontAwesome,
   SimpleLineIcons,
-} from '@expo/vector-icons';
+} from "@expo/vector-icons";
 
-import { useAppContext } from '../context/appContext';
+import { useAppContext } from "../context/appContext";
 
 const Profile = ({ navigation }) => {
   const { logout, user } = useAppContext();
@@ -28,7 +28,7 @@ const Profile = ({ navigation }) => {
     setIsLoading(true);
     await logout();
     setIsLoading(false);
-    navigation.navigate('Login');
+    navigation.navigate("Login");
     return;
   };
 
@@ -49,21 +49,21 @@ const Profile = ({ navigation }) => {
       <View style={styles.TopView}>
         <View
           style={{
-            justifyContent: 'flex-end',
-            alignSelf: 'flex-start',
+            justifyContent: "flex-end",
+            alignSelf: "flex-start",
             paddingStart: 10,
             paddingTop: 10,
             width: 220,
           }}
         >
-          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
             {user?.shopName}
           </Text>
           <Text
             style={{
-              fontWeight: '600',
+              fontWeight: "600",
               fontSize: 15,
-              color: 'grey',
+              color: "grey",
               marginTop: 5,
             }}
           >
@@ -71,9 +71,9 @@ const Profile = ({ navigation }) => {
           </Text>
           <Text
             style={{
-              fontWeight: '600',
+              fontWeight: "600",
               fontSize: 15,
-              color: 'grey',
+              color: "grey",
               marginTop: 5,
             }}
           >
@@ -108,7 +108,7 @@ const Profile = ({ navigation }) => {
           {!user?.image && (
             <Image
               style={{ width: 100, height: 100 }}
-              source={require('../assets/login-png.png')}
+              source={require("../assets/login-png.png")}
             />
           )}
           {user?.image && (
@@ -132,22 +132,22 @@ const Profile = ({ navigation }) => {
       </View>
       <View style={styles.bottomView}>
         <Pressable
-          style={{ flexDirection: 'row', paddingStart: 5, marginTop: 15 }}
-          onPress={() => navigation.navigate('EditProfile')}
+          style={{ flexDirection: "row", paddingStart: 5, marginTop: 15 }}
+          onPress={() => navigation.navigate("EditProfile")}
         >
-          <MaterialCommunityIcons name='account-edit' size={24} color='black' />
-          <Text style={styles.text}>Edit Profile</Text>
+          <MaterialCommunityIcons name="account-edit" size={24} color="black" />
+          <Text style={styles.text}>Profile</Text>
         </Pressable>
         <Pressable
-          style={{ flexDirection: 'row', paddingStart: 9, marginTop: 40 }}
-          onPress={() => navigation.navigate('Orders')}
+          style={{ flexDirection: "row", paddingStart: 9, marginTop: 40 }}
+          onPress={() => navigation.navigate("Orders")}
         >
-          <FontAwesome5 name='clipboard-list' size={20} color='black' />
+          <FontAwesome5 name="clipboard-list" size={20} color="black" />
           <Text
             style={{
-              fontWeight: '600',
+              fontWeight: "600",
               fontSize: 16,
-              alignSelf: 'center',
+              alignSelf: "center",
               marginStart: 22,
             }}
           >
@@ -155,15 +155,15 @@ const Profile = ({ navigation }) => {
           </Text>
         </Pressable>
         <Pressable
-          style={{ flexDirection: 'row', paddingStart: 9, marginTop: 40 }}
-          onPress={() => navigation.navigate('Products')}
+          style={{ flexDirection: "row", paddingStart: 9, marginTop: 40 }}
+          onPress={() => navigation.navigate("Products")}
         >
-          <SimpleLineIcons name='handbag' size={20} color='black' />
+          <SimpleLineIcons name="handbag" size={20} color="black" />
           <Text
             style={{
-              fontWeight: '600',
+              fontWeight: "600",
               fontSize: 16,
-              alignSelf: 'center',
+              alignSelf: "center",
               marginStart: 22,
             }}
           >
@@ -179,19 +179,19 @@ const Profile = ({ navigation }) => {
       <Pressable style={styles.logout} onPress={onLogout}>
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             marginTop: 10,
-            justifyContent: 'center',
+            justifyContent: "center",
           }}
         >
-          <MaterialCommunityIcons name='logout' size={22} color='#2A8B00' />
+          <MaterialCommunityIcons name="logout" size={22} color="#2A8B00" />
           <Text
             style={{
-              fontWeight: '600',
+              fontWeight: "600",
               fontSize: 16,
-              alignSelf: 'center',
+              alignSelf: "center",
               marginStart: 5,
-              color: '#2A8B00',
+              color: "#2A8B00",
             }}
           >
             Logout
@@ -208,17 +208,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
-    backgroundColor: 'black',
+    backgroundColor: "black",
   },
   TopView: {
     marginTop: StatusBar.currentHeight || 30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
     marginHorizontal: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 1,
       height: 1,
@@ -228,12 +228,12 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   bottomView: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     padding: 10,
     marginHorizontal: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 1,
       height: 1,
@@ -245,12 +245,12 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   logout: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     padding: 10,
     marginHorizontal: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 1,
       height: 1,
@@ -262,9 +262,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   text: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 16,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginStart: 20,
   },
 });

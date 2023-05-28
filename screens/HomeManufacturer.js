@@ -372,7 +372,7 @@ const HomeManufacturer = ({ navigation }) => {
 
         {/* Store Management start */}
 
-        <View style={styles.bottomView}>
+        <View style={styles.bottomViewStore}>
           <Text style={{ fontSize: 17, fontWeight: "600" }}>
             Store Management
           </Text>
@@ -438,7 +438,7 @@ const HomeManufacturer = ({ navigation }) => {
             {/* Request Catergory end        */}
           </View>
         </View>
-        <Button
+        {/* <Button
           type="solid"
           color={"green"}
           title={"Logout"}
@@ -448,7 +448,7 @@ const HomeManufacturer = ({ navigation }) => {
           radius={5}
           raised
           onPress={onLogoutClicked}
-        />
+        /> */}
       </ScrollView>
       {/* Store Management end */}
     </SafeAreaView>
@@ -490,6 +490,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     backgroundColor: "#FFF",
     borderRadius: 10,
+    marginTop: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2.5,
+    elevation: 1,
+  },
+  bottomViewStore: {
+    justifyContent: "space-between",
+    padding: 15,
+    marginHorizontal: 15,
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    marginBottom: 15,
     marginTop: 15,
     shadowColor: "#000",
     shadowOffset: {
